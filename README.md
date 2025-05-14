@@ -2,6 +2,7 @@
 Analisa a rede e descrimina todos os serviços e ips associados
 
 Coleta de Conexões TCP e UDP via PowerShell:
+
 O projeto em Python foi inicialmente estruturado com base na coleta de dados obtidos por esses dois comandos em PowerShell — um para conexões TCP e outro para conexões UDP. Esses comandos têm como objetivo mapear, de forma detalhada, as conexões de rede ativas, identificando portas locais/remotas, processos responsáveis e, quando aplicável, serviços associados ao processo svchost.
 
 
