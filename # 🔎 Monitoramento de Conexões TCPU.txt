@@ -1,28 +1,43 @@
-# 🔎 Monitoramento de Conexões TCP/UDP com Enriquecimento de IPs (WHOIS + VirusTotal)
+🛰️ Projeto: Sistema de Monitoramento de Conexões TCP/UDP com Enriquecimento WHOIS e VirusTotal
 
-Sistema desenvolvido em Python para monitorar conexões de rede em tempo real (TCP e UDP), identificar processos associados e enriquecer os IPs remotos com dados de WHOIS e reputação via VirusTotal.
+✅ Descrição Geral
+Este projeto é uma ferramenta de monitoramento de conexões de rede locais (TCP/UDP), com análise de segurança baseada em enriquecimento de dados via WHOIS e a API do VirusTotal. Ele foi desenvolvido em Python com interface gráfica em Tkinter e integra funcionalidades de cibersegurança, análise de processos e geração de relatórios.
 
-## 🛰️ Funcionalidades
 
-- **Varredura local de conexões TCP/UDP** com detalhes:
-  - IP e porta local/remota
-  - PID
-  - Nome do processo
-  - Serviços associados (PowerShell para svchost.exe)
-  - Estado da conexão
-- **Enriquecimento com WHOIS**:
-  - Nome da organização responsável pelo IP (sem API externa)
-- **Consulta à API do VirusTotal**:
-  - Classificação do IP como `malicious`, `suspicious` ou `harmless`
-- **Relatórios automáticos (.csv)**:
-  - Conexões detalhadas
-  - Resultado de análise dos IPs
-- **Interface Gráfica (Tkinter)**:
-  - Visualização das conexões e análises
-  - Botão para destacar IPs maliciosos
+🔍 Funcionalidades Principais
+1. Monitoramento de Conexões
+- Varredura em tempo real das conexões TCP e UDP ativas no sistema.
+- Identificação dos processos e serviços associados (inclusive svchost.exe, com extração de serviços Windows vinculados via PowerShell).
+- Coleta de IPs locais e remotos, portas, PID, nome do processo e estado da conexão.
+
+2. Enriquecimento de Dados
+- WHOIS: Consulta de informações sobre o IP remoto, como nome da organização responsável (sem necessidade de API externa).
+- VirusTotal: Consulta à API pública do VirusTotal para identificar se o IP remoto é classificado como malicious, suspicious ou harmless.
+
+3. Relatórios
+- Geração de arquivos .csv automáticos com:
+- Todas as conexões identificadas (connections_<timestamp>.csv).
+- Relatório de reputação dos IPs (report_<timestamp>.csv).
+
+4. Interface Gráfica
+- GUI feita em Tkinter.
+- Visualização em tabelas com conexões e relatório de IPs.
+- Botão para destacar conexões com IPs maliciosos detectados.
+
+⚠️ Limitações e Considerações
+1. Limite da API VirusTotal (Free Tier):
+- A chave gratuita permite apenas 500 requisições por dia e 4 requisições por minuto.
+- Excedido esse limite, o serviço retorna status 429 (Too Many Requests) e nenhum dado útil é retornado. Isso afeta diretamente a acurácia da análise.
+- O código trata esse erro e ainda assim gera o relatório com os IPs, mas os campos Malicious, Suspicious e Harmless ficarão zerados.
+
+2. Restrições de WHOIS:
+- O WHOIS é feito localmente com a biblioteca ipwhois, que não exige API externa.
+- No entanto, endereços como 127.0.0.1 ou endereços privados (RFC 1918) não retornam dados válidos e são tratados adequadamente.
+
+3. IPv6 Parcialmente Suportado:
+- A análise WHOIS e VirusTotal é feita para IPv4 e IPv6, mas o suporte e resposta para endereços IPv6 pode variar dependendo do IP.
 
 ## 🧱 Requisitos
-
 - Python 3.8+
 - Bibliotecas:
   - `psutil`
@@ -31,20 +46,8 @@ Sistema desenvolvido em Python para monitorar conexões de rede em tempo real (T
   - `ipwhois`
   - `tkinter`
 
-## ⚠️ Limitações
-
-- **VirusTotal API (gratuita)**:
-  - Limite de 500 requisições/dia e 4 por minuto.
-  - Quando excedido: `status 429` e todos os resultados retornam como zero (0).
-- **Endereços especiais (ex: 127.0.0.1, IPs locais)**:
-  - WHOIS não aplicável – tratado no código.
-- **IPv6**:
-  - Parcialmente suportado. Algumas respostas podem falhar dependendo do IP e do serviço.
-
 ## 📊 Exemplo de saída
-
-Relatório em CSV com colunas:
-
+- Relatório em CSV com colunas:
 ```csv
 LocalAddress,LocalPort,RemoteAddress,RemotePort,ProcessId,ProcessName,Services,State
 ...
