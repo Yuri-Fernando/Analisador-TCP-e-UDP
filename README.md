@@ -13,7 +13,6 @@ Get-NetTCPConnection | ForEach-Object {
         # Coleta os serviços associados ao processo svchost
         Get-WmiObject -Class Win32_Service | Where-Object { $_.ProcessId -eq $proc.Id } | Select-Object -ExpandProperty Name
     }
-
     [PSCustomObject]@{
         LocalAddress  = $_.LocalAddress
         LocalPort     = $_.LocalPort
